@@ -77,6 +77,10 @@ input, textarea, select {
   top: 0;
   z-index: 10;
   box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  color: inherit; /* allow inline/theme token color to flow to text/icon */
+}
+.header a, .header small {
+  color: inherit;
 }
 
 .header-inner {

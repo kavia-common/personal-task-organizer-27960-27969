@@ -37,6 +37,22 @@ export const theme = {
     subtleCard: "linear-gradient(180deg, rgba(59,130,246,0.10) 0%, #f9fafb 70%)",
   },
 
+  // Header/navigation tokens (centralized)
+  header: {
+    // deep-blue to primary gradient for Ocean Professional
+    bg: "linear-gradient(90deg, #1E3A8A 0%, #2563EB 100%)",
+    // ensure text is readable on dark background
+    text: "#FFFFFF",
+    // icons default to currentColor unless overridden
+    icon: "#FFFFFF",
+    // subtle lighter hover for elements within header
+    hoverBg: "rgba(255,255,255,0.12)",
+    // optional border for separation
+    border: "rgba(255,255,255,0.10)",
+    // subtle bottom shadow to lift header
+    shadow: "0 2px 14px rgba(30, 58, 138, 0.25)",
+  },
+
   // focus ring
   ring: "0 0 0 3px rgba(37, 99, 235, 0.35)",
 
