@@ -1,10 +1,11 @@
 import React from 'react';
 import TaskItem from './TaskItem';
 import { sortTasks } from '../lib/utils';
+import WelcomeCard from './WelcomeCard';
 
 // PUBLIC_INTERFACE
-export default function TaskList({ tasks, sortBy, setSortBy, loading }) {
-  /** List of tasks with sorting controls and loading placeholders. */
+export default function TaskList({ tasks, sortBy, setSortBy, loading, onGetStarted }) {
+  /** List of tasks with sorting controls and loading placeholders. Renders a WelcomeCard when empty. */
   const sorted = sortTasks(tasks, sortBy);
 
   return (
@@ -29,7 +30,7 @@ export default function TaskList({ tasks, sortBy, setSortBy, loading }) {
           <div className="shimmer" style={{ height: 64 }} />
         </div>
       ) : sorted.length === 0 ? (
-        <div className="empty">No tasks match the current filters.</div>
+        <WelcomeCard onGetStarted={onGetStarted} />
       ) : (
         <div className="list" role="list" aria-label="Task list">
           {sorted.map(task => (

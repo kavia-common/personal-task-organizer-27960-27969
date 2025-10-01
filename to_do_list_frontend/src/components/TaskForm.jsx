@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, forwardRef, useImperativeHandle, useRef } from 'react';
 import { parseTags } from '../lib/utils';
 
 const defaultTask = {
@@ -12,11 +12,22 @@ const defaultTask = {
 };
 
 // PUBLIC_INTERFACE
-export default function TaskForm({ onSubmit, onCancel, initial }) {
-  /** Add/Edit task form with validation. */
+const TaskForm = forwardRef(function TaskForm({ onSubmit, onCancel, initial }, ref) {
+  /** Add/Edit task form with validation and an exposed focusInput() method via ref. */
   const [task, setTask] = useState(defaultTask);
   const [tagsInput, setTagsInput] = useState('');
   const [errors, setErrors] = useState({});
+  const titleRef = useRef(null);
+
+  useImperativeHandle(ref, () => ({
+    // PUBLIC_INTERFACE
+    focusInput() {
+      /** Imperatively focus the title input. */
+      if (titleRef.current) {
+        titleRef.current.focus();
+      }
+    }
+  }));
 
   useEffect(() => {
     if (initial) {
@@ -42,9 +53,17 @@ export default function TaskForm({ onSubmit, onCancel, initial }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!validate()) return;
+    if (!validate()) {
+      // focus the title for quick correction
+      if (titleRef.current) titleRef.current.focus();
+      return;
+    }
     const payload = { ...task, tags: parseTags(tagsInput) };
     onSubmit(payload);
+    // After submit, clear and refocus for fast entry
+    setTask(defaultTask);
+    setTagsInput('');
+    setTimeout(() => titleRef.current && titleRef.current.focus(), 0);
   };
 
   return (
@@ -57,6 +76,7 @@ export default function TaskForm({ onSubmit, onCancel, initial }) {
             <input
               id="title"
               className="input"
+              ref={titleRef}
               value={task.title}
               onChange={(e) => setTask({ ...task, title: e.target.value })}
               placeholder="e.g., Prepare project brief"
@@ -142,4 +162,6 @@ export default function TaskForm({ onSubmit, onCancel, initial }) {
       </fieldset>
     </form>
   );
-}
+});
+
+export default TaskForm;

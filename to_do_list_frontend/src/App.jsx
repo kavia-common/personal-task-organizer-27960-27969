@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import './styles/theme.css';
 import Header from './components/Header';
 import FiltersSidebar from './components/FiltersSidebar';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
+import WelcomeCard from './components/WelcomeCard';
 import { TasksProvider, useTasks, useTasksActions } from './context/TasksContext';
 import { filterTasks } from './lib/utils';
 
@@ -23,6 +24,8 @@ function AppInner() {
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const formRef = useRef(null);
+
   // simulate short loading during initial hydration
   useEffect(() => {
     const t = setTimeout(() => setLoading(false), 400);
@@ -38,22 +41,50 @@ function AppInner() {
     setShowForm(false);
   };
 
+  const revealFormAndFocus = () => {
+    setShowForm(true);
+    // allow form to render before focusing
+    setTimeout(() => {
+      if (formRef.current && typeof formRef.current.focusInput === 'function') {
+        formRef.current.focusInput();
+      }
+    }, 0);
+  };
+
+  const hasTasks = (visibleTasks || []).length > 0;
+
   return (
     <div>
       <Header
         search={filters.search}
         onSearchChange={(v) => setFilters(f => ({ ...f, search: v }))}
-        onAddClick={() => setShowForm(true)}
+        onAddClick={revealFormAndFocus}
       />
       <main className="container main app-shell">
         <FiltersSidebar filters={filters} setFilters={setFilters} />
         <div style={{ display: 'grid', gap: 12 }}>
-          {showForm && <TaskForm onSubmit={handleAdd} onCancel={() => setShowForm(false)} />}
+          {/* When there ARE tasks, show a compact banner near the top (optional). */}
+          {hasTasks && !showForm && (
+            <WelcomeCard
+              variant="compact"
+              onGetStarted={revealFormAndFocus}
+            />
+          )}
+
+          {showForm && (
+            <TaskForm
+              ref={formRef}
+              onSubmit={handleAdd}
+              onCancel={() => setShowForm(false)}
+            />
+          )}
+
           <TaskList
             tasks={visibleTasks}
             sortBy={filters.sortBy}
             setSortBy={(v) => setFilters(f => ({ ...f, sortBy: v }))}
             loading={loading}
+            onGetStarted={revealFormAndFocus}
           />
         </div>
       </main>
