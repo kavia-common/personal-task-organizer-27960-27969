@@ -1,13 +1,12 @@
 import React from 'react';
 import TaskItem from './TaskItem';
 import { sortTasks } from '../lib/utils';
-import WelcomeCard from './WelcomeCard';
 import { FiCheckSquare } from 'react-icons/fi';
 import { theme, focusRingStyle } from '../theme';
 
 // PUBLIC_INTERFACE
-export default function TaskList({ tasks, sortBy, setSortBy, loading, onGetStarted }) {
-  /** List of tasks with sorting controls and loading placeholders. Renders a WelcomeCard when empty. */
+export default function TaskList({ tasks, sortBy, setSortBy, loading }) {
+  /** List of tasks with sorting controls and loading placeholders. */
   const sorted = sortTasks(tasks, sortBy);
 
   return (
@@ -45,13 +44,16 @@ export default function TaskList({ tasks, sortBy, setSortBy, loading, onGetStart
           <div className="shimmer" style={{ height: 64 }} />
           <div className="shimmer" style={{ height: 64 }} />
         </div>
-      ) : sorted.length === 0 ? (
-        <WelcomeCard onGetStarted={onGetStarted} />
       ) : (
         <div className="list" role="list" aria-label="Task list">
           {sorted.map(task => (
             <TaskItem task={task} key={task.id} />
           ))}
+          {sorted.length === 0 && (
+            <div className="empty" role="note" aria-label="No tasks available">
+              No tasks yet. Use the Add Task button above to get started.
+            </div>
+          )}
         </div>
       )}
     </section>

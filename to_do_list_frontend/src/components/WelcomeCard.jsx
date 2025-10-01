@@ -12,6 +12,9 @@ export default function WelcomeCard({
   onSecondary,
   variant = 'full',
   className = '',
+  // New optional props for overlay dismissal without auto-hide on CTA
+  dismissible = false,
+  onDismiss,
 }) {
   /** Accessible welcome/empty-state component with subtle entrance animation. */
   const [mounted, setMounted] = useState(false);
@@ -34,6 +37,7 @@ export default function WelcomeCard({
     opacity: mounted ? 1 : 0,
     transform: mounted ? 'translateY(0)' : 'translateY(6px)',
     outline: 'none',
+    position: 'relative',
   };
 
   const fullStyles = {
@@ -42,6 +46,8 @@ export default function WelcomeCard({
     gap: 10,
     alignItems: 'center',
     textAlign: 'center',
+    maxWidth: 560,
+    width: 'min(92vw, 560px)',
   };
 
   const compactStyles = {
@@ -70,6 +76,25 @@ export default function WelcomeCard({
         e.currentTarget.style.boxShadow = 'var(--shadow-md)';
       }}
     >
+      {!isCompact && dismissible && (
+        <button
+          type="button"
+          aria-label="Dismiss welcome"
+          title="Dismiss"
+          onClick={() => onDismiss && onDismiss()}
+          className="btn btn-ghost"
+          style={{
+            position: 'absolute',
+            top: 8,
+            right: 8,
+            padding: '6px 8px',
+            borderRadius: 8,
+          }}
+        >
+          ×
+        </button>
+      )}
+
       <div
         className="icon"
         aria-hidden="true"
