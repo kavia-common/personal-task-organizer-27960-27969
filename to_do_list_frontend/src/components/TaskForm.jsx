@@ -1,5 +1,7 @@
 import React, { useEffect, useState, forwardRef, useImperativeHandle, useRef } from 'react';
 import { parseTags } from '../lib/utils';
+import { FiPlus, FiSave } from 'react-icons/fi';
+import { theme, buttonVariants, focusRingStyle } from '../theme';
 
 const defaultTask = {
   title: '',
@@ -83,6 +85,12 @@ const TaskForm = forwardRef(function TaskForm({ onSubmit, onCancel, initial }, r
               aria-invalid={!!errors.title}
               aria-describedby={errors.title ? 'title-error' : undefined}
               required
+              onFocus={(e) => Object.assign(e.currentTarget.style, focusRingStyle())}
+              onBlur={(e) => {
+                e.currentTarget.style.boxShadow = '';
+                e.currentTarget.style.borderColor = '';
+                e.currentTarget.style.outline = '';
+              }}
             />
             {errors.title && <div id="title-error" style={{ color: 'var(--color-error)', fontSize: 12 }}>{errors.title}</div>}
           </div>
@@ -94,6 +102,12 @@ const TaskForm = forwardRef(function TaskForm({ onSubmit, onCancel, initial }, r
               type="date"
               value={task.dueDate}
               onChange={(e) => setTask({ ...task, dueDate: e.target.value })}
+              onFocus={(e) => Object.assign(e.currentTarget.style, focusRingStyle())}
+              onBlur={(e) => {
+                e.currentTarget.style.boxShadow = '';
+                e.currentTarget.style.borderColor = '';
+                e.currentTarget.style.outline = '';
+              }}
             />
           </div>
         </div>
@@ -101,7 +115,17 @@ const TaskForm = forwardRef(function TaskForm({ onSubmit, onCancel, initial }, r
         <div className="row" style={{ marginTop: 10 }}>
           <div>
             <label htmlFor="priority">Priority</label>
-            <select id="priority" value={task.priority} onChange={(e) => setTask({ ...task, priority: e.target.value })}>
+            <select
+              id="priority"
+              value={task.priority}
+              onChange={(e) => setTask({ ...task, priority: e.target.value })}
+              onFocus={(e) => Object.assign(e.currentTarget.style, focusRingStyle())}
+              onBlur={(e) => {
+                e.currentTarget.style.boxShadow = '';
+                e.currentTarget.style.borderColor = '';
+                e.currentTarget.style.outline = '';
+              }}
+            >
               <option>High</option>
               <option>Medium</option>
               <option>Low</option>
@@ -109,7 +133,17 @@ const TaskForm = forwardRef(function TaskForm({ onSubmit, onCancel, initial }, r
           </div>
           <div>
             <label htmlFor="status">Status</label>
-            <select id="status" value={task.status} onChange={(e) => setTask({ ...task, status: e.target.value })}>
+            <select
+              id="status"
+              value={task.status}
+              onChange={(e) => setTask({ ...task, status: e.target.value })}
+              onFocus={(e) => Object.assign(e.currentTarget.style, focusRingStyle())}
+              onBlur={(e) => {
+                e.currentTarget.style.boxShadow = '';
+                e.currentTarget.style.borderColor = '';
+                e.currentTarget.style.outline = '';
+              }}
+            >
               <option>Todo</option>
               <option>In Progress</option>
               <option>Done</option>
@@ -121,6 +155,12 @@ const TaskForm = forwardRef(function TaskForm({ onSubmit, onCancel, initial }, r
               id="star"
               value={String(task.starred)}
               onChange={(e) => setTask({ ...task, starred: e.target.value === 'true' })}
+              onFocus={(e) => Object.assign(e.currentTarget.style, focusRingStyle())}
+              onBlur={(e) => {
+                e.currentTarget.style.boxShadow = '';
+                e.currentTarget.style.borderColor = '';
+                e.currentTarget.style.outline = '';
+              }}
             >
               <option value="false">No</option>
               <option value="true">Yes</option>
@@ -137,6 +177,12 @@ const TaskForm = forwardRef(function TaskForm({ onSubmit, onCancel, initial }, r
             placeholder="Add more details..."
             value={task.description}
             onChange={(e) => setTask({ ...task, description: e.target.value })}
+            onFocus={(e) => Object.assign(e.currentTarget.style, focusRingStyle())}
+            onBlur={(e) => {
+              e.currentTarget.style.boxShadow = '';
+              e.currentTarget.style.borderColor = '';
+              e.currentTarget.style.outline = '';
+            }}
           />
         </div>
 
@@ -148,14 +194,38 @@ const TaskForm = forwardRef(function TaskForm({ onSubmit, onCancel, initial }, r
             placeholder="comma, separated, tags"
             value={tagsInput}
             onChange={(e) => setTagsInput(e.target.value)}
+            onFocus={(e) => Object.assign(e.currentTarget.style, focusRingStyle())}
+            onBlur={(e) => {
+              e.currentTarget.style.boxShadow = '';
+              e.currentTarget.style.borderColor = '';
+              e.currentTarget.style.outline = '';
+            }}
           />
         </div>
 
         <div className="row" style={{ marginTop: 12 }}>
-          <button type="submit" className="btn" aria-label={initial ? 'Save changes' : 'Add task'}>
-            {initial ? 'Save' : 'Add Task'}
+          <button
+            type="submit"
+            className="btn"
+            aria-label={initial ? 'Save changes' : 'Add task'}
+            style={buttonVariants('primary')}
+            onFocus={(e) => (e.currentTarget.style.boxShadow = `${theme.ring}, ${theme.shadow.md}`)}
+            onBlur={(e) => (e.currentTarget.style.boxShadow = theme.shadow.md)}
+          >
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+              {initial ? <FiSave aria-hidden="true" /> : <FiPlus aria-hidden="true" />}
+              {initial ? 'Save' : 'Add Task'}
+            </span>
           </button>
-          <button type="button" className="btn btn-ghost" onClick={onCancel} aria-label="Cancel">
+          <button
+            type="button"
+            className="btn btn-ghost"
+            onClick={onCancel}
+            aria-label="Cancel"
+            style={buttonVariants('ghost')}
+            onFocus={(e) => (e.currentTarget.style.boxShadow = `${theme.ring}`)}
+            onBlur={(e) => (e.currentTarget.style.boxShadow = 'none')}
+          >
             Cancel
           </button>
         </div>

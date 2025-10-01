@@ -2,6 +2,8 @@ import React from 'react';
 import TaskItem from './TaskItem';
 import { sortTasks } from '../lib/utils';
 import WelcomeCard from './WelcomeCard';
+import { FiCheckSquare } from 'react-icons/fi';
+import { theme, focusRingStyle } from '../theme';
 
 // PUBLIC_INTERFACE
 export default function TaskList({ tasks, sortBy, setSortBy, loading, onGetStarted }) {
@@ -11,10 +13,24 @@ export default function TaskList({ tasks, sortBy, setSortBy, loading, onGetStart
   return (
     <section className="card" style={{ padding: 12 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-        <h3 style={{ margin: 0 }}>Tasks</h3>
+        <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+          <FiCheckSquare aria-hidden="true" color={theme.primary} />
+          Tasks
+        </h3>
         <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <span style={{ color: 'var(--color-muted)' }}>Sort by</span>
-          <select value={sortBy} onChange={e => setSortBy(e.target.value)} className="select" aria-label="Sort tasks">
+          <select
+            value={sortBy}
+            onChange={e => setSortBy(e.target.value)}
+            className="select"
+            aria-label="Sort tasks"
+            onFocus={(e) => Object.assign(e.currentTarget.style, focusRingStyle())}
+            onBlur={(e) => {
+              e.currentTarget.style.boxShadow = '';
+              e.currentTarget.style.borderColor = '';
+              e.currentTarget.style.outline = '';
+            }}
+          >
             <option value="createdAt">Created date</option>
             <option value="dueDate">Due date</option>
             <option value="priority">Priority</option>
