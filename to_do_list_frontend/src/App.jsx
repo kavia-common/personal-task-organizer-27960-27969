@@ -4,6 +4,7 @@ import Header from './components/Header';
 import FiltersSidebar from './components/FiltersSidebar';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
+import WelcomeBoard from './components/WelcomeBoard';
 import { TasksProvider, useTasks, useTasksActions } from './context/TasksContext';
 import { filterTasks } from './lib/utils';
 
@@ -61,6 +62,12 @@ function AppInner() {
       <main className="container main app-shell">
         <FiltersSidebar filters={filters} setFilters={setFilters} />
         <div style={{ display: 'grid', gap: 12, position: 'relative' }}>
+          {/* Inline welcome board at top of main content */}
+          <WelcomeBoard
+            tasksCount={tasks?.length || 0}
+            onCreateFirstTask={revealFormAndFocus}
+          />
+
           {showForm && (
             <TaskForm
               ref={formRef}
