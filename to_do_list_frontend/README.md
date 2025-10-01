@@ -1,82 +1,54 @@
-# Lightweight React Template for KAVIA
+# Ocean Tasks — React To‑Do List
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+Modern, responsive personal to‑do list SPA with local persistence and an Ocean Professional theme.
+
+## Tech
+- React 18 (CRA)
+- Functional components, hooks, Context + useReducer
+- CSS modules via handcrafted theme.css (no external UI libs)
+- localStorage persistence (abstracted)
+
+## Run
+- Install: `npm install`
+- Start: `npm start` (dev server on http://localhost:3000)
+- Build: `npm run build`
 
 ## Features
+- Add, edit (inline), delete with confirmation
+- Fields: title, description, due date, priority (Low/Medium/High), status (Todo/In Progress/Done), tags, starred
+- Filters: status, priority, starred, search, tags
+- Sorting: created date, due date, priority, status
+- Local storage persistence with initial seed
+- Empty state and loading shimmers
+- Responsive layout with collapsible behavior
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+## Project Structure
+- src/styles/theme.css — Ocean Professional theme and base UI
+- src/context/TasksContext.jsx — reducer, actions, persistence
+- src/components/ — Header, TaskForm, TaskItem, TaskList, FiltersSidebar
+- src/lib/storage.js — localStorage abstraction
+- src/lib/utils.js — helpers: uuid, sorting, filtering, formatting
+- src/App.jsx — app shell and wiring
 
-## Getting Started
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-### `npm test`
-
-Launches the test runner in interactive watch mode.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-## Customization
-
-### Colors
-
-The main brand colors are defined as CSS variables in `src/App.css`:
-
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
+## Data Model
+```
+{
+  id: string,
+  title: string,
+  description?: string,
+  dueDate?: string (ISO),
+  priority: 'Low'|'Medium'|'High',
+  status: 'Todo'|'In Progress'|'Done',
+  tags: string[],
+  starred: boolean,
+  createdAt: string (ISO),
+  updatedAt: string (ISO)
 }
 ```
 
-### Components
+## Notes
+- The data layer is abstracted (src/lib/storage.js, TasksContext) to allow swapping to HTTP later.
+- Accessibility: semantic elements, aria labels, focus rings.
+- Dev server uses CRA defaults. To change port, set PORT in an .env file (see .env.example).
+- Dev server uses CRA defaults. To change port, set PORT in an .env file (see .env.example).
 
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
-
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
-
-## Learn More
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
