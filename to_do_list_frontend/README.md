@@ -26,8 +26,8 @@ Modern, responsive personal to‑do list SPA with local persistence and an Ocean
 - src/styles/theme.css — Ocean Professional theme and base UI
 - src/context/TasksContext.jsx — reducer, actions, persistence
 - src/components/ — Header, TaskForm, TaskItem, TaskList, FiltersSidebar
-- src/lib/storage.js — localStorage abstraction
-- src/lib/utils.js — helpers: uuid, sorting, filtering, formatting
+- src/lib/storage.js — localStorage abstraction (loadTasks, saveTasks)
+- src/lib/utils.js — helpers: uuid, parseTags, sortTasks, filterTasks, formatDate
 - src/App.jsx — app shell and wiring
 
 ## Data Model
